@@ -10,8 +10,9 @@ def main():
     url = settings.URL
     auth = OAuth1(settings.KEY, settings.SECRET)
 
-    out = requests.get(url, auth=auth)
-    print out
+    resp = requests.get(url, auth=auth)
+    return resp.content
 
 if __name__ == '__main__':
-    main()
+    out = main()
+    print out
