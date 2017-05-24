@@ -2,13 +2,13 @@
 
 """ ss_req.py - super simple script to make a request to spotseeker_server.
 """
-import settings
+import secrets
 import requests
 from requests_oauthlib import OAuth1
 
 def main():
-    url = settings.URL
-    auth = OAuth1(settings.KEY, settings.SECRET)
+    url = secrets.URL
+    auth = OAuth1(secrets.KEY, secrets.SECRET)
 
     resp = requests.get(url, auth=auth)
     return resp.content
