@@ -1,4 +1,13 @@
 Library
 Hallway
 Hall
-Center
+Study Center
+Emporium
+Room
+Garden
+Classroom
+Floor
+Lounge
+Basement
+Cellar
+Attic

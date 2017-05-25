@@ -2,3 +2,9 @@ Coffee
 Cafe
 Bistro
 Restaurant
+Pasta
+Pizzeria
+Cafeteria
+Slop
+Gruel
+Kitchen
