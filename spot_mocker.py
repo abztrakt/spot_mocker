@@ -11,7 +11,7 @@ import random
 from requests_oauthlib import OAuth1
 
 # path of where to store the mock data
-mock_path = "/home/kevin/Desktop/scout-vagrant/venv/src/scout/scout/resources/spotseeker/file"
+mock_path = secrets.MOCK_PATH
 
 names = []
 foods = []
