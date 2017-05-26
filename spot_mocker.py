@@ -41,7 +41,14 @@ def scrub(item, item_type):
 	#name, s_website_url, s_phone, s_support_email, owner, manager, images, location[building_name]
 	owner = get_name()
 	item_type = get_item(item_type)
-	item['name'] = owner + "\'s " + item_type 
+	item['name'] = owner + "\'s " + item_type
+	item['s_website_url'] = "www.google.com"
+	item['s_phone'] = "(555) 555-5555"
+	item['s_support_email'] = "helloworld@uw.edu"
+	item['owner'] = "???"
+	item['manager'] = owner
+	item['images'] = null
+	item['location[building_name]'] = owner + "\'s building"
 	print item['name']
 	return item
 
