@@ -85,11 +85,15 @@ def main():
             # study/food/tech space
             item = data[index]
             clean_space = scrub(item, item_type);
+
+            spot_id = item['id']
+
+            mock_spot_file = open(mock_path + "/api/v1/spot/" + str(spot_id), 'w+')
+            mock_spot_file.write(json.dumps(item))
             # print clean_space
             print ""
-            print ""
             items.append(clean_space)
-
+        print len(items)
         mock_file.write(json.dumps(items))
 
 if __name__ == '__main__':
