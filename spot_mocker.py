@@ -19,33 +19,6 @@ foods = []
 places = []
 items = []
 
-def main():
-    gather()
-    auth = OAuth1(secrets.KEY, secrets.SECRET)
-    print "How many Food/Study/Tech spots would you like?"
-    num = input();
-    for item_type, url in secrets.ITEMS.iteritems():
-        print "Generating spots for... " + item_type
-        mock_file_path = mock_path + url
-        mock_file = open(mock_file_path, 'w+')
-        resp = requests.get(secrets.URL + url, auth=auth)
-        data = json.loads(resp.content);
-        indexes = random.sample(range(0, len(data) - 1), min(num, len(data)))
-        items = []
-        for index in indexes:
-            # study/food/tech space
-            item = data[index]
-            clean_space = scrub(item, item_type);
-            # print clean_space
-            print ""
-            print ""
-            items.append(clean_space)
-
-        mock_file.write(json.dumps(items))
-
-if __name__ == '__main__':
-    out = main()
-
 # returns a random owner name
 def get_name():
 	owner = ""
@@ -87,3 +60,30 @@ def gather():
 	items_file = open(dir_path + "/items.txt", 'r')
 	global items
 	items = (filter(None, items + items_file.read().split('\n')))
+
+def main():
+    gather()
+    auth = OAuth1(secrets.KEY, secrets.SECRET)
+    print "How many Food/Study/Tech spots would you like?"
+    num = input();
+    for item_type, url in secrets.ITEMS.iteritems():
+        print "Generating spots for... " + item_type
+        mock_file_path = mock_path + url
+        mock_file = open(mock_file_path, 'w+')
+        resp = requests.get(secrets.URL + url, auth=auth)
+        data = json.loads(resp.content);
+        indexes = random.sample(range(0, len(data) - 1), min(num, len(data)))
+        items = []
+        for index in indexes:
+            # study/food/tech space
+            item = data[index]
+            clean_space = scrub(item, item_type);
+            # print clean_space
+            print ""
+            print ""
+            items.append(clean_space)
+
+        mock_file.write(json.dumps(items))
+
+if __name__ == '__main__':
+    out = main()
