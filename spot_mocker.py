@@ -64,6 +64,7 @@ def gather():
 
 def main():
 	gather()
+	auth = OAuth1(secrets.KEY, secrets.SECRET)
 	print "How many Food/Study/Tech locations would you like?"
 	num = input()
 	print "How many Tech items do you want at each location?"
@@ -74,9 +75,7 @@ def main():
 		mock_file = open(mock_file_path, 'w+')
 		resp = requests.get(secrets.URL + url, auth=auth)
 		data = json.loads(resp.content);
-		indexes = []
-		for i in xrange(0, num):
-			indexes.append(random.randint(0, len(data) - 1))
+		indexes = random.sample(range(0, len(data) - 1), min(num, len(data) - 1))
 		items = []
 		for index in indexes:
 			# study/food/tech space
@@ -92,10 +91,8 @@ def main():
 				items.append(clean_space)
 			else:
 				tech_items = item["items"]
-				tech_indexes = []
 				ids = []
-				for i in xrange(0, tech_num):
-					tech_indexes.append(random.randint(0, len(tech_items) - 1))
+				tech_indexes = random.sample(range(0, len(tech_items) - 1), min(tech_num, len(tech_items) - 1))
 				scrubbed_items = []
 				for i in tech_indexes:
 					tech_item = tech_items[i]
@@ -107,13 +104,10 @@ def main():
 					test = mock_path + "/api/v1/spot?item%3Aid=" + str(i) + "&extended_info%3Aapp_type=tech"
 					# print tech_item
 					mock_spot_file = open(test, 'w+')
-					print json.dumps([item])
-					print " "
 					mock_spot_file.write(json.dumps([item]))
 
 				item["items"] = scrubbed_items
 				items.append(item)
-		print len(items)
 		mock_file.write(json.dumps(items))
 
 if __name__ == '__main__':
