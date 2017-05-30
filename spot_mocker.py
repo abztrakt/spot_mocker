@@ -5,6 +5,7 @@
 import secrets
 import requests
 import os
+import errno
 import json
 import time
 import random
@@ -62,13 +63,23 @@ def gather():
 	global items
 	items = (filter(None, items + items_file.read().split('\n')))
 
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 def main():
 	gather()
+	if not os.path.exists(mock_path):
+		print "Make sure you put in a valid path to put the mock data within your secrets.py!"
+		return False
 	auth = OAuth1(secrets.KEY, secrets.SECRET)
 	print "How many Food/Study/Tech locations would you like?"
 	num = input()
 	print "How many Tech items do you want at each location?"
 	tech_num = input()
+	make_sure_path_exists(mock_path + "/api/v1/spot/")
 	for item_type, url in secrets.ITEMS.iteritems():
 		print "Generating spots for... " + item_type
 		mock_file_path = mock_path + url
@@ -84,6 +95,7 @@ def main():
 				clean_space = scrub(item, item_type);
 				spot_id = item['id']
 				 # writing the detail of that item/file
+				make_sure_path_exists(mock_path + "/api/v1/spot/")
 				mock_spot_file = open(mock_path + "/api/v1/spot/" + str(spot_id), 'w+')
 				mock_spot_file.write(json.dumps(item))
 				# print clean_space
