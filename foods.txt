@@ -2,9 +2,9 @@ Coffee
 Cafe
 Bistro
 Restaurant
-Pasta
+Pastaria
 Pizzeria
 Cafeteria
-Slop
-Gruel
 Kitchen
+Fast Food
+Sandwhich Shop
