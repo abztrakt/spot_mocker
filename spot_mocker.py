@@ -3,6 +3,7 @@
 """ ss_req.py - super simple script to make a request to spotseeker_server.
 """
 import secrets
+import description
 import requests
 import os
 import errno
@@ -74,6 +75,7 @@ def make_sure_path_exists(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
 def main():
 	gather()
 	if not os.path.exists(mock_path):
