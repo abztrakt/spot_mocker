@@ -37,14 +37,19 @@ def get_item(space_type):
 		spot = random.choice(foods)
 	return spot
 
-# replaces name with new custom one
+# replaces name with new custom one, and replaces other sensitive info
 def scrub(item, item_type):
-	#name, s_website_url, s_phone, s_support_email, owner, manager, images, location[building_name]
+	#images, location[building_name]
 	owner = get_name()
 	item_type = get_item(item_type)
-
 	item['name'] = owner + "\'s " + item_type 
 	print item['name']
+	print item
+	item['extended_info']['s_website_url'] = 'http://www.usdebtclock.org'
+	item['extended_info']['s_phone'] = '5555555555'
+	item['extended_info']['s_support_email'] = 'helloworld@uw.edu'
+	item['extended_info']['owner'] = owner
+	item['extended_info']['manager'] = owner
 	return item
 
 # Builds up info for mock data from the txt files
