@@ -44,7 +44,6 @@ def scrub(item, item_type):
 	item_type = get_item(item_type)
 	item['name'] = owner + "\'s " + item_type 
 	print item['name']
-	print item
 	item['extended_info']['s_website_url'] = 'https://www.google.com'
 	item['extended_info']['s_phone'] = '5555555555'
 	item['extended_info']['s_support_email'] = 'helloworld@uw.edu'
