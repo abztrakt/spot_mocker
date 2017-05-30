@@ -21,6 +21,7 @@ foods = []
 places = []
 items = []
 
+
 # returns a random owner name
 def get_name():
 	owner = ""
@@ -39,10 +40,11 @@ def get_item(space_type):
 	return spot
 
 # replaces name with new custom one, and replaces other sensitive info
-def scrub(item, item_type):
+def scrub(item, item_type=""):
 	#images, location[building_name]
 	owner = get_name()
 	item_type = get_item(item_type)
+	print owner
 	item['name'] = owner + "\'s " + item_type 
 	print item['name']
 	item['extended_info']['s_website_url'] = 'https://www.google.com'
@@ -76,58 +78,83 @@ def make_sure_path_exists(path):
         if exception.errno != errno.EEXIST:
             raise
 
+
+def create(item, item_type, items=[]):
+	if item_type != "Tech":
+		clean_space = scrub(item, item_type);
+		spot_id = item['id']
+		 # writing the detail of that item/file
+		make_sure_path_exists(mock_path + "/api/v1/spot/")
+		mock_spot_file = open(mock_path + "/api/v1/spot/" + str(spot_id), 'w+')
+		mock_spot_file.write(json.dumps(item))
+		# print clean_space
+		print ""
+		items.append(clean_space)
+	else:
+		tech_items = item["items"]
+		ids = []
+		scrubbed_items = []
+		for i in xrange(0, len(tech_items) -1):
+			tech_item = tech_items[i]
+			clean_space = scrub(tech_item, item_type);
+			spot_id = tech_item['id']
+			ids.append(spot_id)
+			scrubbed_items.append(clean_space)
+		for i in ids:
+			test = mock_path + "/api/v1/spot?item%3Aid=" + str(i) + "&extended_info%3Aapp_type=tech"
+			# print tech_item
+			mock_spot_file = open(test, 'w+')
+			mock_spot_file.write(json.dumps([item]))
+		item["items"] = scrubbed_items
+		items.append(item)
+
 def main():
 	gather()
+	auth = OAuth1(secrets.KEY, secrets.SECRET)
 	if not os.path.exists(mock_path):
 		print "Make sure you put in a valid path to put the mock data within your secrets.py!"
 		return False
-	auth = OAuth1(secrets.KEY, secrets.SECRET)
-	print "How many Food/Study/Tech locations would you like?"
-	num = input()
-	print "How many Tech items do you want at each location?"
-	tech_num = input()
-	make_sure_path_exists(mock_path + "/api/v1/spot/")
-	for item_type, url in secrets.ITEMS.iteritems():
-		print "Generating spots for... " + item_type
-		mock_file_path = mock_path + url
-		mock_file = open(mock_file_path, 'w+')
-		resp = requests.get(secrets.URL + url, auth=auth)
-		data = json.loads(resp.content);
-		indexes = random.sample(range(0, len(data) - 1), min(num, len(data) - 1))
-		items = []
-		for index in indexes:
-			# study/food/tech space
-			item = data[index]
-			if item_type != "Tech":
-				clean_space = scrub(item, item_type);
-				spot_id = item['id']
-				 # writing the detail of that item/file
-				make_sure_path_exists(mock_path + "/api/v1/spot/")
-				mock_spot_file = open(mock_path + "/api/v1/spot/" + str(spot_id), 'w+')
-				mock_spot_file.write(json.dumps(item))
-				# print clean_space
-				print ""
-				items.append(clean_space)
-			else:
-				tech_items = item["items"]
-				ids = []
-				tech_indexes = random.sample(range(0, len(tech_items) - 1), min(tech_num, len(tech_items) - 1))
-				scrubbed_items = []
-				for i in tech_indexes:
-					tech_item = tech_items[i]
-					clean_space = scrub(tech_item, item_type);
-					spot_id = tech_item['id']
-					ids.append(spot_id)
-					scrubbed_items.append(clean_space)
-				for i in ids:
-					test = mock_path + "/api/v1/spot?item%3Aid=" + str(i) + "&extended_info%3Aapp_type=tech"
-					# print tech_item
-					mock_spot_file = open(test, 'w+')
-					mock_spot_file.write(json.dumps([item]))
+	print "Enter 1: generate mock data from a URL (discover cards/filter results)"
+	print "Enter 2: to generate a set of mock data (list of food/study/tech along with their individual detail pages)"
+	ch = input()
+	if ch == 1:
+		item_type = raw_input("First things first: What kind of spots are we viewing here (Food, Tech, Study)? ")
+		url = raw_input("What's the URL? ")
+		data = []
+		try:
+			print "Gathering data..."
+			resp = requests.get(secrets.URL + url, auth=auth)
+			data = json.loads(resp.content)
+		except:
+			print "Invalid URL"
+			return
+		print "Scrubbing..."
+		for d in data:
+			create(d, item_type)
+		print "Saving..."
+		make_sure_path_exists(mock_path + url)
+		mock_spot_file = open(mock_path + url, 'w+')
+		mock_spot_file.write(json.dumps(data))
+		print "Successfully wrote file?"
 
-				item["items"] = scrubbed_items
-				items.append(item)
-		mock_file.write(json.dumps(items))
+
+	else:
+		print "How many Food/Study/Tech locations would you like?"
+		num = input()
+		make_sure_path_exists(mock_path + "/api/v1/spot/")
+		for item_type, url in secrets.ITEMS.iteritems():
+			print "Generating spots for... " + item_type
+			mock_file_path = mock_path + url
+			mock_file = open(mock_file_path, 'w+')
+			resp = requests.get(secrets.URL + url, auth=auth)
+			data = json.loads(resp.content);
+			indexes = random.sample(range(0, len(data) - 1), min(num, len(data) - 1))
+			items = []
+			for index in indexes:
+				# study/food/tech space
+				item = data[index]
+				create(item, item_type, items)
+			mock_file.write(json.dumps(items))
 
 if __name__ == '__main__':
     out = main()
