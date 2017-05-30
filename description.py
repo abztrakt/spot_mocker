@@ -5,20 +5,13 @@ desc_item = ""
 def np():
 	t = random.randint(1, 10)
 	if t % 2 == 0:
-		return dp() + " " + adjp() + " " + n()
+		return dp() + " " + adj2() + " " + pn()
 	else:
 		return pn()
 
 def dp():
 	choices = ["the", "a"]
 	return random.choice(choices)
-
-def adjf():
-	t = random.randint(1, 10)
-	if t % 2 == 0:
-		return adj()
-	else:
-		return adj() + " " + adjp()
 
 def adjp():
 	t = random.randint(1, 10)
@@ -28,11 +21,15 @@ def adjp():
 		return adj() + " " + adjp()
 
 def adj():
-	choices = ["delicious", "succulent", "tasty", "hearty", "beautiful"]
+	choices = ["delicious", "succulent", "tasty", "hearty", "beautiful", "awe-inspiring"]
+	return random.choice(choices)
+
+def adj2():
+	choices = ["famous", "skilled", "talented"]
 	return random.choice(choices)
 
 def n():
-	choices = ["pizza", "burger", "pasta", "sushi"]
+	choices = ["pizza", "burger", "pasta", "sushi", "soup", "french fries", "goose eggs", "lobster tails"]
 	return random.choice(choices)
 
 def pn():
@@ -41,16 +38,16 @@ def pn():
 def vp():
 	t = random.randint(1, 10)
 	if t % 2 == 0:
-		return tv() + " " + n()
+		return tv() + " " + adjp() + " " + n()
 	else:
 		return iv()
 
 def tv():
-	choices = ["baked", "cooked", "crafted", "assembled"]
+	choices = ["baked", "cooked", "crafted", "assembled", "forged"]
 	return random.choice(choices)
 
 def iv():
-	choices = ["is the best", "is renowned"]
+	choices = ["is the best", "is renowned", "is the worst", "is mediocre at best", "is decent"]
 	return random.choice(choices)
 
 def sentence():

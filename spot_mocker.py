@@ -52,7 +52,8 @@ def scrub(item, item_type=""):
 	item['extended_info']['s_support_email'] = 'helloworld@uw.edu'
 	item['extended_info']['owner'] = owner
 	item['extended_info']['manager'] = owner
-	item['extended_info']['s_description'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+	item['extended_info']['s_description'] = description.gen_description(owner, item_type)
+	print item['extended_info']['s_description']
 	return item
 
 # Builds up info for mock data from the txt files
