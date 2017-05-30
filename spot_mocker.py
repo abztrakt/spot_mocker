@@ -45,12 +45,12 @@ def scrub(item, item_type):
 	item_type = get_item(item_type)
 	item['name'] = owner + "\'s " + item_type 
 	print item['name']
-	print item
-	item['extended_info']['s_website_url'] = 'http://www.usdebtclock.org'
+	item['extended_info']['s_website_url'] = 'https://www.google.com'
 	item['extended_info']['s_phone'] = '5555555555'
 	item['extended_info']['s_support_email'] = 'helloworld@uw.edu'
 	item['extended_info']['owner'] = owner
 	item['extended_info']['manager'] = owner
+	item['extended_info']['s_description'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 	return item
 
 # Builds up info for mock data from the txt files
